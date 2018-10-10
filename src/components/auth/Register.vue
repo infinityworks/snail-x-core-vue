@@ -10,13 +10,13 @@
             <hr>
             <div class="form-group">
                 <input type="text" class="form-control" name="firstName" v-model="firstName"
-                       required placeholder="First Name"/>
+                       placeholder="First Name" required/>
                 <input type="text" class="form-control" name="lastName" v-model="lastName"
-                       required placeholder="Last Name"/>
+                       placeholder="Last Name" required/>
                 <input type="email" class="form-control" name="email" v-model="email"
-                       required placeholder="Email"/>
+                       placeholder="Email" required/>
                 <input type="password" class="form-control" name="password" v-model="password"
-                       required placeholder="Password"/>
+                       placeholder="Password" required/>
                 <button style="float: right;" type="button" class="btn btn-primary" @click="register()">Register
                 </button>
                 <button style="margin-right: 1em; float: right" type="button" class="btn btn-warning"
@@ -110,5 +110,13 @@
 
     input {
         margin-bottom: 1em;
+    }
+
+    input:invalid {
+      border: 2px dashed red;
+    }
+
+    input:valid {
+      border: 2px solid black;
     }
 </style>
