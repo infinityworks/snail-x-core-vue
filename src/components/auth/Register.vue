@@ -3,20 +3,20 @@
         <form id="reg"
               @submit="checkForm"
               action="register()"
-              method="post"
-              novalidate="true">
+              method="post">
+              <!--novalidate="true"-->
 
             <h3 class="page-title">Register</h3>
             <hr>
             <div class="form-group">
                 <input type="text" class="form-control" name="firstName" v-model="firstName"
-                       placeholder="First Name"/>
+                       placeholder="First Name" required/>
                 <input type="text" class="form-control" name="lastName" v-model="lastName"
-                       placeholder="Last Name"/>
+                       placeholder="Last Name" required/>
                 <input type="email" class="form-control" name="email" v-model="email"
-                       placeholder="Email"/>
+                       placeholder="Email" required/>
                 <input type="password" class="form-control" name="password" v-model="password"
-                       placeholder="Password"/>
+                       placeholder="Password" required/>
                 <button style="float: right;" type="button" class="btn btn-primary" @click="register()">Register
                 </button>
                 <button style="margin-right: 1em; float: right" type="button" class="btn btn-warning"
@@ -41,14 +41,34 @@
         methods: {
             checkForm: function (e) {
                 this.errors = [];
+                if (this.firstName.length > 100) {
+                    this.errors.push("First name exceeds maximum 100-character limit.")
+                }
+                if (!this.firstName) {
+                    this.errors.push("First name is required.");
+                }
 
-                if (!this.name) {
-                    this.errors.push("Name required.");
+                if (this.lastName.length > 100) {
+                    this.errors.push("Last name exceeds maximum 100-character limit.")
+                }
+                if (!this.lastName) {
+                    this.errors.push("Last name is required.");
+                }
+
+                if (this.email.length > 100) {
+                    this.errors.push("Email exceeds maximum 100-character limit.")
                 }
                 if (!this.email) {
-                    this.errors.push('Email required.');
+                    this.errors.push("Email is required.");
                 } else if (!this.validEmail(this.email)) {
                     this.errors.push('Valid email required.');
+                }
+
+                if (this.password.length > 100) {
+                    this.errors.push("Password exceeds maximum 100-character limit.")
+                }
+                if (!this.password) {
+                    this.errors.push("Password is required.")
                 }
 
                 if (!this.errors.length) {
@@ -58,7 +78,7 @@
                 e.preventDefault();
             },
             validEmail: function (email) {
-                const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                const re = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/;
                 return re.test(email);
             },
             register() {
@@ -90,5 +110,13 @@
 
     input {
         margin-bottom: 1em;
+    }
+
+    input:invalid {
+      border: 2px dashed red;
+    }
+
+    input:valid {
+      border: 2px solid black;
     }
 </style>
