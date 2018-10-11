@@ -1,27 +1,34 @@
 <template>
     <div id="register">
         <form id="reg"
-              @submit="checkForm"
-              action="register()"
-              method="post">
+              method="post"
+              v-on:submit="validateForm">
               <!--novalidate="true"-->
+            <!--action="register()"-->
 
             <h3 class="page-title">Register</h3>
             <hr>
             <div class="form-group">
                 <input type="text" class="form-control" name="firstName" v-model="firstName"
-                       placeholder="First Name" required/>
+                       placeholder="First Name" maxlength="100" v-bind:class="{ 'is-invalid': attemptSubmit && missingFirstName }"/>
+                <div class="invalid-feedback">First name is required.</div>
+
                 <input type="text" class="form-control" name="lastName" v-model="lastName"
-                       placeholder="Last Name" required/>
+                       placeholder="Last Name" maxlength="100" v-bind:class="{ 'is-invalid': attemptSubmit && missingLastName }"/>
+                <div class="invalid-feedback">Last name is required.</div>
+
                 <input type="email" class="form-control" name="email" v-model="email"
-                       placeholder="Email" required/>
+                       placeholder="Email" maxlength="100" v-bind:class="{ 'is-invalid': attemptSubmit && invalidEmail }"/>
+                <div class="invalid-feedback">Email is required, and must be a valid email format.</div>
+
                 <input type="password" class="form-control" name="password" v-model="password"
-                       placeholder="Password" required/>
-                <button style="float: right;" type="button" class="btn btn-primary" @click="register()">Register
-                </button>
+                       placeholder="Password" maxlength="100" v-bind:class="{ 'is-invalid': attemptSubmit && invalidPassword }"/>
+                <div class="invalid-feedback">Password must be at least 8 characters long, contain one number and one special character.</div>
+
+                <input type="submit" style="float: right;" class="btn btn-primary" value="Register"/>
+
                 <button style="margin-right: 1em; float: right" type="button" class="btn btn-warning"
-                        onclick="window.history.back()">Back
-                </button>
+                        onclick="window.history.back()">Back</button>
             </div>
         </form>
     </div>
@@ -35,53 +42,65 @@
                 firstName: "",
                 lastName: "",
                 email: "",
-                password: ""
+                password: "",
+                attemptSubmit: false,
             }
         },
+        computed: {
+            missingFirstName: function () { return this.firstName === ''; },
+            missingLastName: function () { return this.lastName === ''; },
+            invalidEmail: function () { return this.isEmail(this.email) === false; },
+            invalidPassword: function() { return this.isPassword(this.password) === false; }
+        },
         methods: {
-            checkForm: function (e) {
-                this.errors = [];
-                if (this.firstName.length > 100) {
-                    this.errors.push("First name exceeds maximum 100-character limit.")
-                }
-                if (!this.firstName) {
-                    this.errors.push("First name is required.");
-                }
-
-                if (this.lastName.length > 100) {
-                    this.errors.push("Last name exceeds maximum 100-character limit.")
-                }
-                if (!this.lastName) {
-                    this.errors.push("Last name is required.");
-                }
-
-                if (this.email.length > 100) {
-                    this.errors.push("Email exceeds maximum 100-character limit.")
-                }
-                if (!this.email) {
-                    this.errors.push("Email is required.");
-                } else if (!this.validEmail(this.email)) {
-                    this.errors.push('Valid email required.');
-                }
-
-                if (this.password.length > 100) {
-                    this.errors.push("Password exceeds maximum 100-character limit.")
-                }
-                if (!this.password) {
-                    this.errors.push("Password is required.")
-                }
-
-                if (!this.errors.length) {
-                    return true;
-                }
-
-                e.preventDefault();
-            },
-            validEmail: function (email) {
+            isEmail: function (input) {
                 const re = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/;
-                return re.test(email);
+                return re.test(input);
+            },
+            isPassword: function (input) {
+                const re = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+                return re.test(input);
+            },
+            validateForm: function (event) {
+                this.attemptSubmit = true;
+                if (this.missingFirstName || this.missingLastName || this.invalidEmail || this.invalidPassword) event.preventDefault();
+                if (this.email_in_db()) event.preventDefault();
+                else (this.register());
+
+                // if (!this.lastName.checkValidity()) {
+                //     document.getElementById("lname").innerHTML = this.lastName.validationMessage;
+                // }
+                //
+                //
+                // if (!this.email.checkValidity()) {
+                //     document.getElementById("email").innerHTML = this.email.validationMessage;
+                // }
+                //
+                //
+                // if (!this.password.checkValidity()) {
+                //     document.getElementById("pswd").innerHTML = this.password.validationMessage;
+                // }
+
+            },
+
+            email_in_db() {
+                this.$store.dispatch('emailInDB', {
+                    email: this.email,
+                })
+                    .then((response) => {
+                        var result = Boolean(response.data);
+                        if (result == true) {
+                            alert("It exists you idiot!")
+                            return true
+                        }
+                        else {
+                            alert("Well done young one, this is a new email")
+                            return false
+                        }
+                    })
             },
             register() {
+                alert("register has been called!")
                 this.$store.dispatch('registerUser', {
                     firstName: this.firstName,
                     lastName: this.lastName,
@@ -89,6 +108,7 @@
                     password: this.password
                 })
                     .then(() => {
+                        alert("going to login")
                         this.$router.push({name: 'login'})
                     })
             }
@@ -110,13 +130,5 @@
 
     input {
         margin-bottom: 1em;
-    }
-
-    input:invalid {
-      border: 2px dashed red;
-    }
-
-    input:valid {
-      border: 2px solid black;
     }
 </style>
