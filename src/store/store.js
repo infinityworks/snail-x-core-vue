@@ -16,21 +16,33 @@ export const store = new Vuex.Store({
             return state.user
         }
     },
+    mutations: {
+        loginUser(state, user_email) {
+            state.user = user_email
+        },
+        logoutUser(state) {
+            state.user = null
+        }
+    },
     actions: {
         loginUser(context, credentials) {
             return new Promise((resolve, reject) => {
                 axios.post('http://127.0.0.1:5000/login-user', {
                     username: credentials.username,
                     password: credentials.password,
-                })
+                }, {
+                    headers: {
+                        'Content-type': 'application/json',
+                }})
                     .then(response => {
                         const user_email = response.data;
-                        localStorage.setItem('user_email', user_email);
+                        console.log(response.data)
+                        localStorage.setItem('user_email' , response.data['request_data']);
                         context.commit('loginUser', user_email);
                         resolve(response);
                     })
                     .catch(error => {
-                        console.log(error);
+                        console.log(error)
                         reject(error);
                     })
             })
@@ -47,9 +59,15 @@ export const store = new Vuex.Store({
                         resolve(response);
                     })
                     .catch(error => {
-                        console.log(error);
                         reject(error);
                     })
+            })
+        },
+        logoutUser(context) {
+            return new Promise((resolve, reject) => {
+                localStorage.removeItem('user_email')
+                context.commit('logoutUser')
+                resolve()
             })
         }
     }
