@@ -26,11 +26,10 @@ export const store = new Vuex.Store({
                     .then(response => {
                         const user_email = response.data;
                         localStorage.setItem('user_email', user_email);
-                        context.commit('loginUser', user_email);
+                        //context.commit('loginUser', user_email);
                         resolve(response);
                     })
                     .catch(error => {
-                        console.log(error);
                         reject(error);
                     })
             })
@@ -47,7 +46,6 @@ export const store = new Vuex.Store({
                         resolve(response);
                     })
                     .catch(error => {
-                        console.log(error);
                         reject(error);
                     })
             })

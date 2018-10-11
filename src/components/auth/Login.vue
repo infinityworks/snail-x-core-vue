@@ -7,14 +7,15 @@
                    v-model="username" placeholder="Username"/>
             <input class="form-control" type="password" name="password"
                    v-model="password" placeholder="Password"/>
-            <button style="float: right" class="btn btn-primary" type="button" v-on:click="login()">Login</button>
-            <button style="margin-right: 1em; float: right" type="button" class="btn btn-warning" onclick="window.history.back()">Back</button>
+            <button style="float: right" class="btn btn-primary" type="button" @click="login()">Login</button>
+            <button style="margin-right: 1em; float: right" type="button" class="btn btn-warning"
+                    onclick="window.history.back()">Back
+            </button>
         </form>
     </div>
 </template>
 
 <script>
-
     export default {
         name: 'Login',
         data() {
@@ -25,13 +26,20 @@
         },
         methods: {
             login() {
-              this.$store.dispatch('loginUser', {
-                username: this.username,
-                password: this.password,
-              })
-                .then(() => {
-                  this.$router.push({ name: 'home' })
-                })
+                if (this.username !== "" && this.password !== "" && this.username.length < 100 && this.password.length < 100) {
+                    this.$store.dispatch('loginUser', {
+                        username: this.username,
+                        password: this.password,
+                    })
+                        .then(() => {
+                            this.$router.push({name: 'home'})
+                        })
+                        .catch(err => {
+                            alert(err);
+                        })
+                } else {
+                    alert("Please enter a username and password of valid length (0 to 100 chars)");
+                }
             }
         }
     }
