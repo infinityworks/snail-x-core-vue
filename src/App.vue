@@ -23,13 +23,13 @@
                     <router-link to="/" class="nav-link">Leaderboards</router-link>
                 </li>
                 <li v-if="!loggedIn">
-                    <router-link to="/login" class="nav-link">Login</router-link>
+                    <router-link :to="{ name: 'login' }" class="nav-link">Login</router-link>
                 </li>
                 <li v-if="!loggedIn">
-                    <router-link to="/register" class="nav-link">Register</router-link>
+                    <router-link :to="{ name: 'register' }" class="nav-link">Register</router-link>
                 </li>
                 <li v-if="loggedIn">
-                    <router-link  to="/logout" class="nav-link" @click.native="logout()">Logout
+                    <router-link  :to="{ name: 'logout' }" class="nav-link">Logout
                     </router-link>
                 </li>
             </ul>
@@ -58,9 +58,6 @@
         methods: {
             setAuthenticated(status) {
                 this.authenticated = status;
-            },
-            logout() {
-                this.authenticated = false;
             }
         }
     }
