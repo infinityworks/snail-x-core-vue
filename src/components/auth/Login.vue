@@ -4,7 +4,7 @@
         <hr>
         <form action="#" @submit.prevent="login">
             <input class="form-control" type="text" name="username"
-                   v-model="username" placeholder="Username"/>
+                   v-model="username" placeholder="Email"/>
             <input class="form-control" type="password" name="password"
                    v-model="password" placeholder="Password"/>
             <button style="float: right" class="btn btn-primary" type="button" @click="login()">Login</button>
