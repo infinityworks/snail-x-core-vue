@@ -1,7 +1,6 @@
 <template>
     <div id="home">
-        <h1 v-if="loggedIn" style="color: whitesmoke">Welcome, {{ userEmail }}</h1>
-        <h1 v-else style="color: whitesmoke">Welcome, please register or login.</h1>
+        <h1 v-if="!loggedIn"  style="color: whitesmoke">Welcome, please register or login.</h1>
     </div>
 </template>
 
@@ -11,8 +10,7 @@
         name: 'home',
         computed: {
             ...mapGetters([
-                'loggedIn',
-                'userEmail'
+                'loggedIn'
             ])
         }
     }
