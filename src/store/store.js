@@ -34,6 +34,9 @@ export const store = new Vuex.Store({
         loginUser(context, credentials) {
             return new Promise((resolve, reject) => {
                 axios.post('http://127.0.0.1:5000/login-user', {
+                    username: credentials.username,
+                    password: credentials.password
+                })
                     email: credentials.email,
                     password: credentials.password,
                 }, {
@@ -59,7 +62,7 @@ export const store = new Vuex.Store({
                     firstName: credentials.firstName,
                     lastName: credentials.lastName,
                     email: credentials.email,
-                    password: credentials.password,
+                    password: credentials.password
                 })
                     .then(response => {
                         resolve(response);
@@ -69,12 +72,27 @@ export const store = new Vuex.Store({
                     })
             })
         },
+
+        emailInDB: function (context, credentials) {
+            return new Promise((resolve, reject) => {
+                axios.post('http://127.0.0.1:5000/check-duplicate-email', {
+                    email: credentials.email
+                })
+                    .then(response => {
+                        return resolve(response.data);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        reject(error);
+                    })
+
         logoutUser(context) {
             return new Promise((resolve) => {
                 localStorage.removeItem('user_email');
                 localStorage.removeItem('user_first_name');
                 context.commit('logoutUser');
                 resolve()
+
             })
         }
     }

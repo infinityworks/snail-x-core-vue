@@ -1,27 +1,50 @@
 <template>
     <div id="register">
         <form id="reg"
-              @submit="checkForm"
-              action="register()"
-              method="post">
-              <!--novalidate="true"-->
+              @submit.prevent="validateForm">
 
             <h3 class="page-title">Register</h3>
             <hr>
             <div class="form-group">
+                <!--<input type="text" class="form-control" name="firstName" v-model="firstName"-->
+                       <!--placeholder="First Name" maxlength="100" v-bind:class="{ 'is-invalid': attemptSubmit && missingFirstName }"/>-->
+                <!--<div class="invalid-feedback">First name is required.</div>-->
+
+                <!--<input type="text" class="form-control" name="lastName" v-model="lastName"-->
+                       <!--placeholder="Last Name" maxlength="100" v-bind:class="{ 'is-invalid': attemptSubmit && missingLastName }"/>-->
+                <!--<div class="invalid-feedback">Last name is required.</div>-->
+
+                <!--<input type="email" class="form-control" name="email" v-model="email"-->
+                       <!--placeholder="Email" maxlength="100" v-bind:class="{ 'is-invalid': attemptSubmit && invalidEmail }"/>-->
+                <!--<div class="invalid-feedback">Email is required, and must be a valid email format.</div>-->
+
+                <!--<div v-bind:class="{ 'is-invalid': attemptSubmit && duplicateEmail }"></div>-->
+                <!--<div class="invalid-feedback">Email already exists in database.</div>-->
+
+                <!--<input type="password" class="form-control" name="password" v-model="password"-->
+                       <!--placeholder="Password" maxlength="100" v-bind:class="{ 'is-invalid': attemptSubmit && invalidPassword }"/>-->
+                <!--<div class="invalid-feedback">Password must be at least 8 characters long, contain one number and one special character.</div>-->
+
                 <input type="text" class="form-control" name="firstName" v-model="firstName"
-                       required placeholder="First Name"/>
+                       placeholder="First Name" maxlength="100"/>
+                <p id="fName" class="validation-alert"></p>
+
                 <input type="text" class="form-control" name="lastName" v-model="lastName"
-                       required placeholder="Last Name"/>
-                <input type="email" class="form-control" name="email" v-model="email"
-                       required placeholder="Email"/>
+                       placeholder="Last Name" maxlength="100"/>
+                 <p id="lName" class="validation-alert"></p>
+
+                <input type="text" class="form-control" name="email" v-model="email"
+                       placeholder="Email" maxlength="100"/>
+                 <p id="email" class="validation-alert"></p>
+
                 <input type="password" class="form-control" name="password" v-model="password"
-                       required placeholder="Password"/>
-                <button style="float: right;" type="button" class="btn btn-primary" @click="register()">Register
-                </button>
+                       placeholder="Password" maxlength="100"/>
+                <p id="psswd" class="validation-alert"></p>
+
+                <input type="submit" style="float: right;" class="btn btn-primary" value="Register"/>
+
                 <button style="margin-right: 1em; float: right" type="button" class="btn btn-warning"
-                        onclick="window.history.back()">Back
-                </button>
+                        onclick="window.history.back()">Back</button>
             </div>
         </form>
     </div>
@@ -35,51 +58,105 @@
                 firstName: "",
                 lastName: "",
                 email: "",
-                password: ""
+                password: "",
+                allValid: true,
             }
         },
+        computed: {
+            missingFirstName: function () { return this.firstName === ''; },
+            missingLastName: function () { return this.lastName === ''; },
+            invalidEmail: function () { return this.isEmail(this.email) === false; },
+            duplicateEmail: function () { return this.email_in_db(this.email); },
+            invalidPassword: function() { return this.isPassword(this.password) === false; }
+        },
         methods: {
-            checkForm: function (e) {
-                this.errors = [];
-                if (this.firstName.length > 100) {
-                    this.errors.push("First name exceeds maximum 100-character limit.")
-                }
-                if (!this.firstName) {
-                    this.errors.push("First name is required.");
-                }
-
-                if (this.lastName.length > 100) {
-                    this.errors.push("Last name exceeds maximum 100-character limit.")
-                }
-                if (!this.lastName) {
-                    this.errors.push("Last name is required.");
-                }
-
-                if (this.email.length > 100) {
-                    this.errors.push("Email exceeds maximum 100-character limit.")
-                }
-                if (!this.email) {
-                    this.errors.push("Email is required.");
-                } else if (!this.validEmail(this.email)) {
-                    this.errors.push('Valid email required.');
-                }
-
-                if (this.password.length > 100) {
-                    this.errors.push("Password exceeds maximum 100-character limit.")
-                }
-                if (!this.password) {
-                    this.errors.push("Password is required.")
-                }
-
-                if (!this.errors.length) {
-                    return true;
-                }
-
-                e.preventDefault();
-            },
-            validEmail: function (email) {
+            isEmail: function (input) {
                 const re = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/;
-                return re.test(email);
+                return re.test(input);
+            },
+            isPassword: function (input) {
+                const re = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+                return re.test(input);
+            },
+
+            validateFirstName: function() {
+                if (this.missingFirstName) {
+                    document.getElementById("fName").innerHTML = "First name is required.";
+                    this.allValid = false;
+                }
+                else {
+                    document.getElementById("fName").innerHTML = "";
+                }
+            },
+
+            validateLastName: function() {
+                if (this.missingLastName) {
+                    document.getElementById("lName").innerHTML = "Last name is required.";
+                    this.allValid = false;
+                }
+                else {
+                    document.getElementById("lName").innerHTML = "";
+                }
+            },
+
+            validatePassword: function() {
+                if (this.invalidPassword) {
+                    document.getElementById("psswd").innerHTML = "Password must be at least 8 characters long, and contain one number and one special character.";
+                    this.allValid = false;
+                }
+                else {
+                    document.getElementById("psswd").innerHTML = "";
+                }
+            },
+
+            validateEmail: function() {
+                if (this.invalidEmail) {
+                    document.getElementById("email").innerHTML = "Email is required, and must be of a valid email format.";
+                    this.allValid = false;
+                }
+                else {
+                    this.duplicateEmail.then((inDb) => {
+                        if (inDb) {
+                            document.getElementById("email").innerHTML = "User account with this email already exists.";
+                            this.allValid = false;
+                       } else {
+                            document.getElementById("email").innerHTML = "";
+                        }
+                    }).then(() => {
+                        if (!this.allValid) {
+                            return;
+                        }
+
+                        this.register();
+                    });
+                }
+            },
+
+            validateForm: function (event) {
+                this.allValid = true;
+
+                this.validateFirstName();
+                this.validateLastName();
+                this.validatePassword();
+                this.validateEmail();
+
+                event.preventDefault();
+            },
+
+
+            email_in_db() {
+                return this.$store.dispatch('emailInDB', {
+                    email: this.email,
+                })
+                    .then((response) => {
+                        var result = Boolean(response);
+                        if (result) {
+                            return true
+                        }
+                        else {
+                            return false
+                        }
+                    })
             },
             register() {
                 this.$store.dispatch('registerUser', {
@@ -110,5 +187,10 @@
 
     input {
         margin-bottom: 1em;
+    }
+
+    .validation-alert {
+        color: red;
+        font-size: medium;
     }
 </style>
