@@ -2,8 +2,6 @@
     <div id="register">
         <form id="reg"
               @submit.prevent="validateForm">
-              <!--novalidate="true"-->
-            <!--action="register()"-->
 
             <h3 class="page-title">Register</h3>
             <hr>
@@ -80,9 +78,8 @@
                 const re = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
                 return re.test(input);
             },
-            validateForm: function (event) {
-                this.allValid = true;
 
+            validateFirstName: function() {
                 if (this.missingFirstName) {
                     document.getElementById("fName").innerHTML = "First name is required.";
                     this.allValid = false;
@@ -90,7 +87,9 @@
                 else {
                     document.getElementById("fName").innerHTML = "";
                 }
+            },
 
+            validateLastName: function() {
                 if (this.missingLastName) {
                     document.getElementById("lName").innerHTML = "Last name is required.";
                     this.allValid = false;
@@ -98,7 +97,9 @@
                 else {
                     document.getElementById("lName").innerHTML = "";
                 }
+            },
 
+            validatePassword: function() {
                 if (this.invalidPassword) {
                     document.getElementById("psswd").innerHTML = "Password must be at least 8 characters long, and contain one number and one special character.";
                     this.allValid = false;
@@ -106,7 +107,9 @@
                 else {
                     document.getElementById("psswd").innerHTML = "";
                 }
+            },
 
+            validateEmail: function() {
                 if (this.invalidEmail) {
                     document.getElementById("email").innerHTML = "Email is required, and must be of a valid email format.";
                     this.allValid = false;
@@ -129,6 +132,15 @@
                         this.register();
                     });
                 }
+            },
+
+            validateForm: function (event) {
+                this.allValid = true;
+
+                this.validateFirstName();
+                this.validateLastName();
+                this.validatePassword();
+                this.validateEmail();
 
                 event.preventDefault();
             },
