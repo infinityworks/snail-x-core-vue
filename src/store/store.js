@@ -33,7 +33,7 @@ export const store = new Vuex.Store({
     actions: {
         emailInDB: function (context, credentials) {
             return new Promise((resolve, reject) => {
-                axios.post('http://127.0.0.1:5000/check-duplicate-email', {
+                axios.post('https://snail-x-core.herokuapp.com/check-duplicate-email', {
                     email: credentials.email
                 })
                     .then(response => {
@@ -49,7 +49,7 @@ export const store = new Vuex.Store({
 
         loginUser(context, credentials) {
             return new Promise((resolve, reject) => {
-                axios.post('http://127.0.0.1:5000/login-user', {
+                axios.post('https://snail-x-core.herokuapp.com/login-user', {
                     email: credentials.email,
                     password: credentials.password,
                 }, {
