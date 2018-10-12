@@ -7,6 +7,7 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
     state: {
         user: localStorage.getItem('user_email') || null,
+        user_first_name: localStorage.getItem('user_first_name') || null,
     },
     getters: {
         loggedIn(state) {
@@ -14,6 +15,19 @@ export const store = new Vuex.Store({
         },
         userEmail(state) {
             return state.user
+        },
+        userFirstName(state) {
+            return state.user_first_name
+        }
+    },
+    mutations: {
+        loginUser(state, { user_email, user_first_name }) {
+            state.user = user_email;
+            state.user_first_name = user_first_name
+        },
+        logoutUser(state) {
+            state.user = null;
+            state.user_first_name = null
         }
     },
     actions: {
@@ -23,14 +37,21 @@ export const store = new Vuex.Store({
                     username: credentials.username,
                     password: credentials.password
                 })
+                    email: credentials.email,
+                    password: credentials.password,
+                }, {
+                    headers: {
+                        'Content-type': 'application/json',
+                }})
                     .then(response => {
-                        const user_email = response.data;
+                        const user_email = response.data['user_email'];
+                        const user_first_name = response.data['user_first_name'];
                         localStorage.setItem('user_email', user_email);
-                        context.commit('loginUser', user_email);
+                        localStorage.setItem('user_first_name', user_first_name);
+                        context.commit('loginUser', { user_email, user_first_name });
                         resolve(response);
                     })
                     .catch(error => {
-                        console.log(error);
                         reject(error);
                     })
             })
@@ -47,11 +68,11 @@ export const store = new Vuex.Store({
                         resolve(response);
                     })
                     .catch(error => {
-                        console.log(error);
                         reject(error);
                     })
             })
         },
+
         emailInDB: function (context, credentials) {
             return new Promise((resolve, reject) => {
                 axios.post('http://127.0.0.1:5000/check-duplicate-email', {
@@ -64,6 +85,14 @@ export const store = new Vuex.Store({
                         console.log(error);
                         reject(error);
                     })
+
+        logoutUser(context) {
+            return new Promise((resolve) => {
+                localStorage.removeItem('user_email');
+                localStorage.removeItem('user_first_name');
+                context.commit('logoutUser');
+                resolve()
+
             })
         }
     }

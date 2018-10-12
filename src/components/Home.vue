@@ -1,12 +1,18 @@
 <template>
     <div id="home">
-        <h1 style="color: whitesmoke">Welcome, please register or login.</h1>
+        <h1 v-if="!loggedIn"  style="color: whitesmoke">Welcome, please register or login.</h1>
     </div>
 </template>
 
 <script>
+    import { mapGetters } from "vuex"
     export default {
-        name: 'home'
+        name: 'home',
+        computed: {
+            ...mapGetters([
+                'loggedIn'
+            ])
+        }
     }
 </script>
 
