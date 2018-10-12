@@ -7,6 +7,7 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
     state: {
         user: localStorage.getItem('user_email') || null,
+        user_first_name: localStorage.getItem('user_first_name') || null,
     },
     getters: {
         loggedIn(state) {
@@ -14,30 +15,37 @@ export const store = new Vuex.Store({
         },
         userEmail(state) {
             return state.user
+        },
+        userFirstName(state) {
+            return state.user_first_name
         }
     },
     mutations: {
-        loginUser(state, user_email) {
-            state.user = user_email
+        loginUser(state, { user_email, user_first_name }) {
+            state.user = user_email;
+            state.user_first_name = user_first_name
         },
         logoutUser(state) {
-            state.user = null
+            state.user = null;
+            state.user_first_name = null
         }
     },
     actions: {
         loginUser(context, credentials) {
             return new Promise((resolve, reject) => {
                 axios.post('http://127.0.0.1:5000/login-user', {
-                    username: credentials.username,
+                    email: credentials.email,
                     password: credentials.password,
                 }, {
                     headers: {
                         'Content-type': 'application/json',
                 }})
                     .then(response => {
-                        const user_email = response.data['request_data'];
+                        const user_email = response.data['user_email'];
+                        const user_first_name = response.data['user_first_name'];
                         localStorage.setItem('user_email', user_email);
-                        context.commit('loginUser', user_email);
+                        localStorage.setItem('user_first_name', user_first_name);
+                        context.commit('loginUser', { user_email, user_first_name });
                         resolve(response);
                     })
                     .catch(error => {
@@ -62,9 +70,10 @@ export const store = new Vuex.Store({
             })
         },
         logoutUser(context) {
-            return new Promise((resolve, reject) => {
-                localStorage.removeItem('user_email')
-                context.commit('logoutUser')
+            return new Promise((resolve) => {
+                localStorage.removeItem('user_email');
+                localStorage.removeItem('user_first_name');
+                context.commit('logoutUser');
                 resolve()
             })
         }

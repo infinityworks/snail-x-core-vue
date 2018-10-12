@@ -3,8 +3,8 @@
         <h3 class="page-title">Login</h3>
         <hr>
         <form action="#" @submit.prevent="login">
-            <input class="form-control" type="text" name="username"
-                   v-model="username" placeholder="Email"/>
+            <input class="form-control" type="text" name="email"
+                   v-model="email" placeholder="Email"/>
             <input class="form-control" type="password" name="password"
                    v-model="password" placeholder="Password"/>
             <button style="float: right" class="btn btn-primary" type="button" @click="login()">Login</button>
@@ -20,15 +20,15 @@
         name: 'Login',
         data() {
             return {
-                username: "",
+                email: "",
                 password: ""
             }
         },
         methods: {
             login() {
-                if (this.username !== "" && this.password !== "" && this.username.length < 100 && this.password.length < 100) {
+                if (this.email !== "" && this.password !== "" && this.email.length < 100 && this.password.length < 100) {
                     this.$store.dispatch('loginUser', {
-                        username: this.username,
+                        email: this.email,
                         password: this.password,
                     })
                         .then(() => {
@@ -38,7 +38,7 @@
                             alert("Invalid login details please try again.");
                         })
                 } else {
-                    alert("Please enter a username and password of valid length (0 to 100 chars)");
+                    alert("Please enter a email and password of valid length (0 to 100 chars)");
                 }
             }
         }
