@@ -117,11 +117,9 @@
                 else {
                     this.duplicateEmail.then((inDb) => {
                         if (inDb) {
-                            alert("duplicateEmail if statement called");
                             document.getElementById("email").innerHTML = "User account with this email already exists.";
                             this.allValid = false;
                        } else {
-                            alert("html set to blank")
                             document.getElementById("email").innerHTML = "";
                         }
                     }).then(() => {
@@ -147,18 +145,15 @@
 
 
             email_in_db() {
-                alert("email_in_db called - she wants her clothes back")
                 return this.$store.dispatch('emailInDB', {
                     email: this.email,
                 })
                     .then((response) => {
                         var result = Boolean(response);
                         if (result) {
-                            alert("Its true!")
                             return true
                         }
                         else {
-                            alert("Its false!!")
                             return false
                         }
                     })
