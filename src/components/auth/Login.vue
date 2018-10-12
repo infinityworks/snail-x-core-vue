@@ -34,8 +34,8 @@
                         .then(() => {
                             this.$router.push({name: 'home'})
                         })
-                        .catch(err => {
-                            alert(err);
+                        .catch(() => {
+                            alert("Invalid login details please try again.");
                         })
                 } else {
                     alert("Please enter a username and password of valid length (0 to 100 chars)");

@@ -35,14 +35,12 @@ export const store = new Vuex.Store({
                         'Content-type': 'application/json',
                 }})
                     .then(response => {
-                        const user_email = response.data;
-                        console.log(response.data)
-                        localStorage.setItem('user_email' , response.data['request_data']);
+                        const user_email = response.data['request_data'];
+                        localStorage.setItem('user_email', user_email);
                         context.commit('loginUser', user_email);
                         resolve(response);
                     })
                     .catch(error => {
-                        console.log(error)
                         reject(error);
                     })
             })
