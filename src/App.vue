@@ -23,14 +23,14 @@
                     <router-link to="/" class="nav-link">Leaderboards</router-link>
                 </li>
                 <li v-if="!loggedIn">
-                    <router-link to="/login" class="nav-link">Login</router-link>
+                    <router-link :to="{ name: 'login' }" class="nav-link">Login</router-link>
                 </li>
                 <li v-if="!loggedIn">
-                    <router-link to="/register" class="nav-link">Register</router-link>
+                    <router-link :to="{ name: 'register' }" class="nav-link">Register</router-link>
                 </li>
                 <li v-if="loggedIn">
-                    <router-link  to="/logout" class="nav-link" @click.native="logout()">Logout
-                    </router-link>
+                    <p style="color: orange; display: inline-block;">Welcome, {{ userFirstName }}</p>
+                    <router-link style="display: inline-block;" :to="{ name: 'logout' }" class="nav-link">Logout</router-link>
                 </li>
             </ul>
         </div>
@@ -41,7 +41,8 @@
 </template>
 
 <script>
-    import { mapGetters } from "vuex"
+    import {mapGetters} from "vuex"
+
     export default {
         name: 'App',
         data() {
@@ -52,15 +53,13 @@
         computed: {
             ...mapGetters([
                 'loggedIn',
-                'userEmail'
+                'userEmail',
+                'userFirstName'
             ])
         },
         methods: {
             setAuthenticated(status) {
                 this.authenticated = status;
-            },
-            logout() {
-                this.authenticated = false;
             }
         }
     }
@@ -85,20 +84,31 @@
 
     .nav {
         display: flex;
-        padding: 15px 0;
+        padding: 8px 0;
         justify-content: flex-end;
-        margin: 0 0 24px;
+        margin: 0 0 18px;
         flex-wrap: nowrap !important;
         list-style: none;
         align-items: center;
+        height: 50px;
     }
 
     .nav a {
         color: #636b6f;
-        padding: 0 25px;
-        font-size: 14px;
+        padding: 0 24px;
+        font-size: 12px;
         font-weight: 800;
-        letter-spacing: .1rem;
+        letter-spacing: .05rem;
+        text-decoration: none;
+        text-transform: uppercase;
+    }
+
+    .nav p {
+        color: #636b6f;
+        padding: 0 20px;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: .05rem;
         text-decoration: none;
         text-transform: uppercase;
     }
