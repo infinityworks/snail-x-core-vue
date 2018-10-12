@@ -1,8 +1,7 @@
 <template>
     <div id="register">
         <form id="reg"
-              method="post"
-              v-on:submit="validateForm">
+              @submit.prevent="validateForm">
               <!--novalidate="true"-->
             <!--action="register()"-->
 
@@ -63,9 +62,22 @@
             },
             validateForm: function (event) {
                 this.attemptSubmit = true;
-                if (this.missingFirstName || this.missingLastName || this.invalidEmail || this.invalidPassword) event.preventDefault();
-                if (this.email_in_db()) event.preventDefault();
-                else (this.register());
+                if (this.missingFirstName || this.missingLastName || this.invalidEmail || this.invalidPassword) {
+                    return;
+                }
+
+                this.email_in_db().then((inDb) => {
+                    if (inDb) {
+                        return;
+                    }
+
+                    this.register();
+                });
+
+
+                event.preventDefault();
+            },
+
 
                 // if (!this.lastName.checkValidity()) {
                 //     document.getElementById("lname").innerHTML = this.lastName.validationMessage;
@@ -81,15 +93,16 @@
                 //     document.getElementById("pswd").innerHTML = this.password.validationMessage;
                 // }
 
-            },
 
             email_in_db() {
-                this.$store.dispatch('emailInDB', {
+                return this.$store.dispatch('emailInDB', {
                     email: this.email,
                 })
                     .then((response) => {
-                        var result = Boolean(response.data);
-                        if (result == true) {
+                        alert(response)
+                        var result = Boolean(response);
+                        alert(result)
+                        if (result) {
                             alert("It exists you idiot!")
                             return true
                         }

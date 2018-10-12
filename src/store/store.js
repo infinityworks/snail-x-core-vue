@@ -59,6 +59,7 @@ export const store = new Vuex.Store({
                     email: credentials.email
                 })
                     .then(response => {
+                        alert(response.data)
                         return resolve(response.data);
                     })
                     .catch(error => {
