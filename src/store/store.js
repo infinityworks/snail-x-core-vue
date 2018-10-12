@@ -71,7 +71,7 @@ export const store = new Vuex.Store({
         },
         registerUser(context, credentials) {
             return new Promise((resolve, reject) => {
-                axios.post('http://127.0.0.1:5000/register-user', {
+                axios.post('https://snail-x-core.herokuapp.com/register-user', {
                     firstName: credentials.firstName,
                     lastName: credentials.lastName,
                     email: credentials.email,
@@ -95,28 +95,3 @@ export const store = new Vuex.Store({
         }
     }
 });
-
-
-
-
-
-
-
-
-
-
-
-// emailInDB: function (context, credentials) {
-//             return new Promise((resolve, reject) => {
-//                 axios.post('http://127.0.0.1:5000/check-duplicate-email', {
-//                     email: credentials.email
-//                 })
-//                     .then(response => {
-//                         return resolve(response.data);
-//                     })
-//                     .catch(error => {
-//                         console.log(error);
-//                         reject(error);
-//                     })
-//             }
-//         },

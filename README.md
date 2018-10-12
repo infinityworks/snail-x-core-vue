@@ -1,4 +1,6 @@
-# auth_site
+**BUILD STATUS** [![CircleCI](https://circleci.com/gh/infinityworks/snail-x-core-vue.svg?style=svg)](https://circleci.com/gh/infinityworks/snail-x-core-vue)
+
+# webapp
 
 ## Project setup
 ```
