@@ -46,5 +46,7 @@
 </script>
 
 <style scoped>
-
+    #app {
+        overflow: auto;
+    }
 </style>
