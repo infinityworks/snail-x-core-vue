@@ -3,9 +3,8 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
               integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
               crossorigin="anonymous">
-        <div>
-            <img id="snail-logo"
-                 src="https://banner2.kisspng.com/20180225/avw/kisspng-escargot-sea-snail-clip-art-brown-cartoon-snail-5a92648eaab006.4875330315195434386992.jpg"/>
+        <div id="snail-logo">
+            <img src="https://banner2.kisspng.com/20180225/avw/kisspng-escargot-sea-snail-clip-art-brown-cartoon-snail-5a92648eaab006.4875330315195434386992.jpg"/>
         </div>
 
         <div class="navigation-bar" id="navbar">
@@ -80,14 +79,15 @@
         color: #2c3e50;
         font-size: 24px;
         height: 100vh;
+        /*overflow: auto;*/
     }
 
     .nav {
         display: flex;
         padding: 8px 0;
-        justify-content: flex-end;
-        margin: 0 0 18px;
-        flex-wrap: nowrap !important;
+        /*justify-content: flex-end;*/
+        margin: auto;
+        /*flex-wrap: nowrap !important;*/
         list-style: none;
         align-items: center;
         height: 50px;
@@ -131,33 +131,35 @@
         background-color: whitesmoke;
         border-top: 1px grey solid;
         border-bottom: 1px grey solid;
-        position: fixed;
+        /*position: fixed;*/
         left: 27.5%;
         top: 26%;
         padding-left: 1em;
-        margin-bottom: 1em;
-        width: 750px;
+        margin: auto;
+        width: 80%;
         display: flex;
     }
 
     body {
-        width: 1024px;
+        /*width: 1024px;*/
         background-image: url("https://3c1703fe8d.site.internapcdn.net/newman/gfx/news/hires/2014/1-newstaugusti.jpg");
+        overflow: auto;
 
     }
 
     #app {
-        width: 1024px;
+        /*width: 1024px;*/
         margin: auto;
-        position: center;
+        /*position: center;*/
     }
 
     #snail-logo {
-        top: 4%;
-        left: 40%;
-        position: fixed;
-        height: 20%;
-        width: 18%;
+        margin: auto;
+        /*top: 4%;*/
+        /*left: 40%;*/
+        height: 5%;
+        width: 5%;
+        position: center;
     }
 
     .page-title {
