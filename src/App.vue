@@ -3,8 +3,8 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
               integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
               crossorigin="anonymous">
-        <div id="snail-logo">
-            <img src="https://banner2.kisspng.com/20180225/avw/kisspng-escargot-sea-snail-clip-art-brown-cartoon-snail-5a92648eaab006.4875330315195434386992.jpg"/>
+        <div id="snail-div">
+            <img id="snail-img" src="https://banner2.kisspng.com/20180225/avw/kisspng-escargot-sea-snail-clip-art-brown-cartoon-snail-5a92648eaab006.4875330315195434386992.jpg"/>
         </div>
 
         <div class="navigation-bar" id="navbar">
@@ -153,13 +153,18 @@
         /*position: center;*/
     }
 
-    #snail-logo {
+
+    #snail-div {
+        display: flex;
+        margin-top: 5%;
+        height: 20%;
+    }
+
+    #snail-img {
         margin: auto;
         /*top: 4%;*/
         /*left: 40%;*/
-        height: 5%;
-        width: 5%;
-        position: center;
+        width: 20%;
     }
 
     .page-title {

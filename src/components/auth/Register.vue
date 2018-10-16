@@ -41,9 +41,9 @@
                        placeholder="Password" maxlength="100"/>
                 <p id="psswd" class="validation-alert"></p>
 
-                <input type="submit" style="float: right;" class="btn btn-primary" value="Register"/>
+                <input type="submit" class="btn btn-primary" value="Register"/>
 
-                <button style="margin-right: 1em; float: right" type="button" class="btn btn-warning"
+                <button type="button" class="btn btn-warning"
                         onclick="window.history.back()">Back</button>
             </div>
         </form>
@@ -175,18 +175,15 @@
 
 <style scoped>
     #register {
-        position: fixed;
-        top: 10%;
-        left: 11%;
         width: 50%;
         border: 1px solid grey;
-        background-color: #FFFFFF;
-        margin: 10em;
+        background-color: white;
+        margin: 5% auto auto;
         padding: 20px;
     }
 
     input {
-        margin-bottom: 1em;
+        margin-right: 1em;
     }
 
     .validation-alert {

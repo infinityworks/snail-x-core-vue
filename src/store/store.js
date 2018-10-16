@@ -69,6 +69,8 @@ export const store = new Vuex.Store({
                     })
             })
         },
+
+
         registerUser(context, credentials) {
             return new Promise((resolve, reject) => {
                 axios.post('https://snail-x-core.herokuapp.com/register-user', {
