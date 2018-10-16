@@ -48,7 +48,7 @@
         },
         methods: {
             get_open_round() {
-                this.$store.dispatch('loginUser', {
+                this.$store.dispatch('', {
                     })
                         .then((response) => {
                             print(response)

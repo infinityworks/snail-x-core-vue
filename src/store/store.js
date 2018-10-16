@@ -87,6 +87,7 @@ export const store = new Vuex.Store({
                     })
             })
         },
+
         logoutUser(context) {
             return new Promise((resolve) => {
                 localStorage.removeItem('user_email');
@@ -94,6 +95,19 @@ export const store = new Vuex.Store({
                 context.commit('logoutUser');
                 resolve()
             })
-        }
+        },
+
+        getOpenRound() {
+            return new Promise((resolve, reject) => {
+                axios.get('https://snail-x-core.herokuapp.com/get-open-round', {
+                })
+                    .then(response => {
+                        resolve(response);
+                    })
+                    .catch(error => {
+                        reject(error);
+                    })
+            })
+        },
     }
 });
