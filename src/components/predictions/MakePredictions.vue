@@ -1,7 +1,7 @@
 <template>
     <div id="make-predictions">
         <h2 class="page-title">Make Your Predictions!</h2>
-        <h3 class="round-name">Round Name</h3>
+        <h3 class="round-name">{{ round_name }}</h3>
         <hr>
         <form>
             <h4 class="race-number">Race 1</h4>
@@ -16,7 +16,7 @@
             <hr>
         </form>
 
-        <form @submit.prevent="get_open_round">
+        <form>
             <h4 class="race-number">Race 2</h4>
             <hr>
             <input class="radio" type="radio" name="snail" value="1">Snail 1: Snail Platt<br>
@@ -46,14 +46,19 @@
 
             }
         },
+
+        created () {
+          this.get_open_round()
+        },
+
         methods: {
-            get_open_round() {
-                this.$store.dispatch('', {
+            get_open_round()
+            {
+                this.$store.dispatch('getOpenRound', {})
+                    .then((response) => {
+                        this.round_name = response[1]
                     })
-                        .then((response) => {
-                            print(response)
-                        })
-                }
+            }
         }
     }
 </script>

@@ -97,9 +97,9 @@ export const store = new Vuex.Store({
             })
         },
 
-        getOpenRound() {
+        getOpenRound(context) {
             return new Promise((resolve, reject) => {
-                axios.get('https://snail-x-core.herokuapp.com/get-open-round', {
+                axios.post('https://snail-x-core.herokuapp.com/get-open-round', {
                 })
                     .then(response => {
                         resolve(response);
