@@ -35,7 +35,7 @@
 
 <script>
     export default {
-        name: 'Make Predictions',
+        name: 'Make-Predictions',
         data() {
             return {
                 round_id: 0,
@@ -50,7 +50,10 @@
         created () {
           this.get_open_round()
         },
-
+        watch: {
+            // call again the method if the route changes
+            '$route': 'get-open_round'
+        },
         methods: {
             get_open_round()
             {
