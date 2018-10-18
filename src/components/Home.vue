@@ -56,7 +56,7 @@
         left: 32%;
         width: 50%;
     }
-
+    /*--- User predictions table styling ---*/
     table {
         width:70%;
         background-color:white;
@@ -69,4 +69,5 @@
         padding: 15px;
         text-align: left;
     }
+    /*--- User predictions table styling end ---*/
 </style>
