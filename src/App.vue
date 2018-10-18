@@ -80,6 +80,7 @@
         color: #2c3e50;
         font-size: 24px;
         height: 100vh;
+        overflow: auto;
     }
 
     .nav {
