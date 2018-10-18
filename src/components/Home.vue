@@ -23,7 +23,7 @@
 
                         if(response.data.message !== "Error. No predictions made") {
 
-
+                            //Print user predictions in table on homepage 
                             var printed_table = '<table><tr><th> Race ID</th><th>Snail Name</th> </tr>';
 
                             for (var y = 0; y < response.data.length; y++) {
