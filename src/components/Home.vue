@@ -19,9 +19,8 @@
                 this.$store.dispatch('getPredictions')
                     .then((response) => {
                         if(response.data.message !== "Error. No predictions made") {
-
-
                             var printed_table = '<table><tr><th>Race ID</th><th>Snail Name</th> </tr>';
+
 
                             for (var y = 0; y < response.data.length; y++) {
                                 printed_table += '<tr><td>' + (y + 1) + '</td><td>' + response.data[y][1] + '</td></tr>';
@@ -52,7 +51,7 @@
         left: 32%;
         width: 50%;
     }
-
+    /*--- User predictions table styling ---*/
     table {
         width:70%;
         background-color:white;
@@ -65,4 +64,5 @@
         padding: 15px;
         text-align: left;
     }
+    /*--- User predictions table styling end ---*/
 </style>

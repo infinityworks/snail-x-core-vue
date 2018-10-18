@@ -93,6 +93,7 @@ export const store = new Vuex.Store({
                 resolve()
             })
         },
+        //Get user predictions from snail-x-core/core/router.py using email
         getPredictions() {
             return new Promise((resolve, reject) => {
                 axios.post('http://127.0.0.1:5000/user-predictions', {
