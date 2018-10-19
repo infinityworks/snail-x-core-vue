@@ -19,7 +19,7 @@
             getPredictions() {
                 this.$store.dispatch('getPredictions')
                     .then((response) => {
-                        if(response.data.message !== "Error. No predictions made") {
+                        if(response.data.message !== "Error. No predictions made" || response.data.message !== "No Round") {
 
                             document.getElementById('predictions-banner').innerHTML = "Your predictions for round " + response.data[0][4] + ":"
                             var printed_table = '<table><tr><th>Race No.</th><th>Snail No.</th><th>Snail Name</th><th>Trainer</th> </tr>';
@@ -28,8 +28,11 @@
                                 printed_table += '<tr><td>' + (y + 1) + '</td><td>' + response.data[y][1] + '</td><td>' + response.data[y][2] + '</td><td>' + response.data[y][3] + '</td></tr>';
                             }
                             printed_table += '</table>';
-                        } else {
+                        } else if(response.data.message == "Error. No predictions made") {
                             printed_table = "<center><h3 style='background-color:white; padding:5px;'>You have not made any predictions. To do so <a href='snailx.racing'>Click Here</a></h3></center>"
+
+                        } else {
+                            printed_table = "<center><h3 style='background-color:white; padding:5px;'>No rounds currently open!</h3></center>"
 
                         }
                         document.getElementById('predictions').innerHTML = printed_table;
