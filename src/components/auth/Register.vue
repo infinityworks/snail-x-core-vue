@@ -6,24 +6,6 @@
             <h3 class="page-title">Register</h3>
             <hr>
             <div class="form-group">
-                <!--<input type="text" class="form-control" name="firstName" v-model="firstName"-->
-                       <!--placeholder="First Name" maxlength="100" v-bind:class="{ 'is-invalid': attemptSubmit && missingFirstName }"/>-->
-                <!--<div class="invalid-feedback">First name is required.</div>-->
-
-                <!--<input type="text" class="form-control" name="lastName" v-model="lastName"-->
-                       <!--placeholder="Last Name" maxlength="100" v-bind:class="{ 'is-invalid': attemptSubmit && missingLastName }"/>-->
-                <!--<div class="invalid-feedback">Last name is required.</div>-->
-
-                <!--<input type="email" class="form-control" name="email" v-model="email"-->
-                       <!--placeholder="Email" maxlength="100" v-bind:class="{ 'is-invalid': attemptSubmit && invalidEmail }"/>-->
-                <!--<div class="invalid-feedback">Email is required, and must be a valid email format.</div>-->
-
-                <!--<div v-bind:class="{ 'is-invalid': attemptSubmit && duplicateEmail }"></div>-->
-                <!--<div class="invalid-feedback">Email already exists in database.</div>-->
-
-                <!--<input type="password" class="form-control" name="password" v-model="password"-->
-                       <!--placeholder="Password" maxlength="100" v-bind:class="{ 'is-invalid': attemptSubmit && invalidPassword }"/>-->
-                <!--<div class="invalid-feedback">Password must be at least 8 characters long, contain one number and one special character.</div>-->
 
                 <input type="text" class="form-control" name="firstName" v-model="firstName"
                        placeholder="First Name" maxlength="100"/>

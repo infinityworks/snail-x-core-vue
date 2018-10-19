@@ -7,7 +7,7 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
     state: {
         user: localStorage.getItem('user_email') || null,
-        user_first_name: localStorage.getItem('user_first_name') || null,
+        user_first_name: localStorage.getItem('user_first_name') || null
     },
     getters: {
         loggedIn(state) {
@@ -18,6 +18,9 @@ export const store = new Vuex.Store({
         },
         userFirstName(state) {
             return state.user_first_name
+        },
+        userID(state) {
+            return state.user_id
         }
     },
     mutations: {
@@ -33,14 +36,13 @@ export const store = new Vuex.Store({
     actions: {
         emailInDB: function (context, credentials) {
             return new Promise((resolve, reject) => {
-                axios.post('https://snail-x-core.herokuapp.com/check-duplicate-email', {
+                axios.post('http://localhost:5000/check-duplicate-email', {
                     email: credentials.email
                 })
                     .then(response => {
                         return resolve(response.data["result"]);
                     })
                     .catch(error => {
-                        console.log(error);
                         reject(error);
                     })
             })
@@ -49,7 +51,7 @@ export const store = new Vuex.Store({
 
         loginUser(context, credentials) {
             return new Promise((resolve, reject) => {
-                axios.post('https://snail-x-core.herokuapp.com/login-user', {
+                axios.post('http://localhost:5000/login-user', {
                     email: credentials.email,
                     password: credentials.password,
                 }, {
@@ -73,7 +75,7 @@ export const store = new Vuex.Store({
 
         registerUser(context, credentials) {
             return new Promise((resolve, reject) => {
-                axios.post('https://snail-x-core.herokuapp.com/register-user', {
+                axios.post('http://localhost:5000/register-user', {
                     firstName: credentials.firstName,
                     lastName: credentials.lastName,
                     email: credentials.email,
@@ -103,6 +105,20 @@ export const store = new Vuex.Store({
                 })
                     .then(response => {
                         resolve(response);
+                    })
+            })
+        },
+        storePredictions(context, predictions) {
+            return new Promise((resolve, reject) => {
+                axios.post('http://localhost:5000/store-predictions', {
+                    userEmail: this.state.user,
+                    racePredictions: predictions.racePredictions
+                })
+                    .then(response => {
+                        resolve(response);
+                    })
+                    .catch(error => {
+                        reject(error);
                     })
             })
         },
