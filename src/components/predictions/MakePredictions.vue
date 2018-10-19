@@ -69,8 +69,6 @@
                 this.checkedRadios[dataset.raceId] = dataset.snailId;
             },
             allTicked() {
-                console.log(this.checkedRadios.size)
-                console.log(this.races.length)
                 return Object.keys(this.checkedRadios).length == this.races.length;
             },
             submitForm() {

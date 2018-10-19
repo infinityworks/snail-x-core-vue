@@ -40,6 +40,9 @@ export default new Router({
             path: "/make-predictions",
             name: "make-predictions",
             component: MakePredictionsComponent,
+            meta: {
+                requiresAuth: true
+            }
         },
     ]
 })
