@@ -22,9 +22,14 @@
                         console.log(response.data.length)
 
                         if(response.data.message !== "Error. No predictions made") {
+<<<<<<< Updated upstream
 
 
                             var printed_table = '<table><tr><th> Race ID</th><th>Snail Name</th> </tr>';
+=======
+                            document.getElementById('predictions-banner').innerHTML = "Your predictions for round " + response.data[0][4] + ":"
+                            var printed_table = '<table><tr><th>Race No.</th><th>Snail No.</th><th>Snail Name</th><th>Trainer</th> </tr>';
+>>>>>>> Stashed changes
 
                             for (var y = 0; y < response.data.length; y++) {
                                 printed_table += '<tr><td>' + (y + 1) + '</td><td>' + response.data[y][1] + '</td></tr>';
@@ -56,6 +61,18 @@
         left: 32%;
         width: 50%;
     }
+<<<<<<< Updated upstream
+=======
+    /*--- prediction banner styling ---*/
+    #predictions-banner {
+        background-color: white;
+        width: 35%;
+        margin-bottom: 5%;
+        margin-left: 17.5%;
+        text-align: center;
+    }
+    /*--- prediction banner styling end ---*/
+>>>>>>> Stashed changes
 
     table {
         width:70%;
