@@ -1,6 +1,7 @@
 <template>
     <div id="home">
         <h1 v-if="!loggedIn"  style="color: whitesmoke">Welcome, please register or login.</h1>
+        <div v-if="loggedIn" id="predictions-banner"></div>
         <div v-if="loggedIn" id="predictions"></div>
     </div>
 </template>
@@ -19,11 +20,12 @@
                 this.$store.dispatch('getPredictions')
                     .then((response) => {
                         if(response.data.message !== "Error. No predictions made") {
+
                             document.getElementById('predictions-banner').innerHTML = "Your predictions for round " + response.data[0][4] + ":"
                             var printed_table = '<table><tr><th>Race No.</th><th>Snail No.</th><th>Snail Name</th><th>Trainer</th> </tr>';
 
                             for (var y = 0; y < response.data.length; y++) {
-                                printed_table += '<tr><td>' + (y + 1) + '</td><td>' + response.data[y][1] + '</td></tr>';
+                                printed_table += '<tr><td>' + (y + 1) + '</td><td>' + response.data[y][1] + '</td><td>' + response.data[y][2] + '</td><td>' + response.data[y][3] + '</td></tr>';
                             }
                             printed_table += '</table>';
                         } else {
@@ -49,10 +51,10 @@
         position:fixed;
         top: 40%;
         left: 32%;
-        width: 50%;
     }
     /*--- prediction banner styling ---*/
-    #predictions-banner {
+
+    #predictions-banner{
         background-color: white;
         width: 35%;
         margin-bottom: 5%;
@@ -60,6 +62,8 @@
         text-align: center;
     }
     /*--- prediction banner styling end ---*/
+
+    /*--- User predictions table styling ---*/
 
     table {
         width:70%;
