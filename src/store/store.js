@@ -21,7 +21,7 @@ export const store = new Vuex.Store({
         }
     },
     mutations: {
-        loginUser(state, { user_email, user_first_name }) {
+        loginUser(state, {user_email, user_first_name}) {
             state.user = user_email;
             state.user_first_name = user_first_name
         },
@@ -55,13 +55,14 @@ export const store = new Vuex.Store({
                 }, {
                     headers: {
                         'Content-type': 'application/json',
-                }})
+                    }
+                })
                     .then(response => {
                         const user_email = response.data['user_email'];
                         const user_first_name = response.data['user_first_name'];
                         localStorage.setItem('user_email', user_email);
                         localStorage.setItem('user_first_name', user_first_name);
-                        context.commit('loginUser', { user_email, user_first_name });
+                        context.commit('loginUser', {user_email, user_first_name});
                         resolve(response);
                     })
                     .catch(error => {
@@ -101,7 +102,8 @@ export const store = new Vuex.Store({
                 }, {
                     headers: {
                         'Content-type': 'application/json',
-                }})
+                    }
+                })
                     .then(response => {
                         resolve(response);
                     })
@@ -111,5 +113,13 @@ export const store = new Vuex.Store({
                     })
             })
         },
+        getActiveRound() {
+            return new Promise((resolve) => {
+                axios.get('localhost:5000/get-active-round')
+                    .then(response => {
+                        resolve(response.data['status'])
+                    })
+            })
+        }
     }
 });

@@ -1,13 +1,14 @@
 <template>
     <div id="home">
-        <h1 v-if="!loggedIn"  style="color: whitesmoke">Welcome, please register or login.</h1>
+        <h1 v-if="!loggedIn" style="color: whitesmoke">Welcome, please register or login.</h1>
         <div v-if="loggedIn" id="predictions-banner"></div>
         <div v-if="loggedIn" id="predictions"></div>
     </div>
 </template>
 
 <script>
-    import { mapGetters } from "vuex"
+    import {mapGetters} from "vuex"
+
     export default {
         name: 'home',
         computed: {
@@ -19,7 +20,7 @@
             getPredictions() {
                 this.$store.dispatch('getPredictions')
                     .then((response) => {
-                        if(response.data.message !== "Error. No predictions made") {
+                        if (response.data.message !== "Error. No predictions made") {
 
                             document.getElementById('predictions-banner').innerHTML = "Your predictions for round " + response.data[0][4] + ":"
                             var printed_table = '<table><tr><th>Race No.</th><th>Snail No.</th><th>Snail Name</th><th>Trainer</th> </tr>';
@@ -34,48 +35,56 @@
                         }
                         document.getElementById('predictions').innerHTML = printed_table;
                     })
+            },
+            getActiveRound() {
+                this.$store.dispatch('getActiveRound')
+                    .then((response) => {
+                        alert(response)
+                    })
             }
         },
         beforeMount() {
-            this.getPredictions()
+            this.getPredictions();
+            this.getActiveRound()
         }
     }
-
-
-
-
 </script>
 
 <style>
     #home {
-        position:fixed;
+        position: fixed;
         top: 40%;
         left: 32%;
     }
+
     /*--- prediction banner styling ---*/
 
-    #predictions-banner{
+    #predictions-banner {
         background-color: white;
         width: 35%;
         margin-bottom: 5%;
         margin-left: 17.5%;
         text-align: center;
     }
+
     /*--- prediction banner styling end ---*/
 
     /*--- User predictions table styling ---*/
 
     table {
-        width:70%;
-        background-color:white;
+        width: 70%;
+        background-color: white;
     }
+
     table, th, td {
         border: 1px solid black;
         border-collapse: collapse;
     }
+
     th, td {
         padding: 15px;
         text-align: left;
     }
+
     /*--- User predictions table styling end ---*/
 </style>
