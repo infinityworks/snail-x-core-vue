@@ -13,9 +13,6 @@
         name: 'home',
         data() {
             return {
-                predictions: false,
-                openRound: false,
-                responseData: "",
             }
         },
         computed: {
@@ -56,53 +53,33 @@
                             document.getElementById("home-message").innerHTML = update_text;
                         }
                         else {
-                            this.checkForPredictions()
-                            this.setPredictionsDisplay()
+                            this.getPredictions()
                         }
                     })
+            },
+            getPredictions() {
+                this.$store.dispatch('getPredictions')
+                    .then((response) => {
+                        if(response.data[0] !== "No Open Round") {
+                            if (response.data.message !== "Error. No predictions made") {
+                                document.getElementById('predictions-banner').innerHTML = "Your predictions for round " + response.data[0][4] + ":";
+                                var printed_table = '<table><tr><th>Race No.</th><th>Snail No.</th><th>Snail Name</th><th>Trainer</th> </tr>';
+                                for (var y = 0; y < response.data.length; y++) {
+                                    printed_table += '<tr><td>' + (y + 1) + '</td><td>' + response.data[y][1] + '</td><td>' + response.data[y][2] + '</td><td>' + response.data[y][3] + '</td></tr>';
+                                }
+                                printed_table += '</table>';
+                            } else if (response.data.message == "Error. No predictions made") {
+                                printed_table = "<center><h3 style='background-color:white; margin-right:30%;'>You have not made any predictions. To do so <a href='snailx.racing'>Click Here</a></h3></center>"
+                                printed_table+="<img height=70% width=70% src=https://static.euronews.com/articles/stories/03/22/91/52/880x495_cmsv2_1f2eea27-fa79-5a58-90f2-c298315d4e68-3229152.jpg>"
+                            }
+                        } else {
+                            printed_table = "<center><h3 style='background-color:white; padding:5px; margin-right:50%'>No rounds currently open!</h3></center>"
+                        }
+                        document.getElementById('predictions').innerHTML = printed_table;
+                    })
                 },
-                checkForPredictions() {
-                    this.$store.dispatch("getPredictions")
-                        .then((response) => {
-                            this.responseData = response.data;
-                            alert("check for predictions")
-                            alert(response.data[0])
-                            if (response.data[0] !== "No Open Round") {
-                                this.openRound = false;
-                            }
-                            else {
-                                this.openRound = true;
-                            }
-                            if (response.data.message === "Error. No predictions made") {
-                                this.predictions = false;
-                            }
-                            else {
-                                this.predictions = true;
-                            }
-                        })
-                    alert("open round")
-                    alert(this.openRound)
-                    alert("predictions")
-                    alert(this.predictions)
-                },
-                setPredictionsDisplay() {
-                    if (this.openRound && this.predictions) {
-                        document.getElementById('predictions-banner').innerHTML = "Your predictions for round " + this.responseData[0][4] + ":";
-                                    var printed_table = '<table><tr><th>Race No.</th><th>Snail No.</th><th>Snail Name</th><th>Trainer</th> </tr>';
 
-                                    for (var y = 0; y < this.responseData.length; y++) {
-                                        printed_table += '<tr><td>' + (y + 1) + '</td><td>' + this.responseData[y][1] + '</td><td>' + this.responseData[y][2] + '</td><td>' + this.responseData[y][3] + '</td></tr>';
-                                    }
-                                    printed_table += '</table>';
-                    }
-                    else if (this.openRound && !this.predictions) {
-                        printed_table = "<center><h3 style='background-color:white; padding:5px;'>You have not made any predictions. To do so <a href='snailx.racing'>Click Here</a></h3></center>"
-                    }
-                    else if (!this.openRound) {
-                        printed_table = "<center><h3 style='background-color:white; padding:5px;'>No rounds currently open!</h3></center>"
-                    }
-                    document.getElementById('predictions').innerHTML = printed_table;
-                }
+
             }
     }
 
