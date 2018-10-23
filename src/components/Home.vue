@@ -1,6 +1,6 @@
 <template>
     <div id="home">
-        <h1 v-if="!loggedIn" style="color: whitesmoke">Welcome, please register or login.</h1>
+        <!--<h1 v-if="!loggedIn" style="color: whitesmoke">Welcome, please register or login.</h1>-->
         <h1 id="home-message"></h1>
         <div id="predictions-banner"></div>
         <div id="message-and-image"></div>
@@ -12,10 +12,18 @@
 
     export default {
         name: 'home',
+        data() {
+            return {
+                messageText: "",
+            }
+        },
         computed: {
             ...mapGetters([
                 'loggedIn'
             ])
+        },
+        created() {
+            this.checkFutureRound()
         },
         methods: {
             checkFutureRound() {
@@ -102,6 +110,7 @@
         beforeMount() {
             this.checkFutureRound();
         }
+
     }
 </script>
 
@@ -112,6 +121,16 @@
         left: 32%;
     }
 
+    /*--- future rounds message styling ---*/
+
+    #home-message{
+        background-color: white;
+        /*color: black;*/
+        width: 50%;
+        margin-bottom: 5%;
+        margin-left: 5%;
+        text-align: center;
+    }
     /*--- prediction banner styling ---*/
 
     #predictions-banner {
