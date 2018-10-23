@@ -1,8 +1,9 @@
 <template>
     <div id="home">
         <h1 v-if="!loggedIn" style="color: whitesmoke">Welcome, please register or login.</h1>
-        <div v-if="loggedIn" id="predictions-banner"></div>
-        <div v-if="loggedIn" id="predictions"></div>
+        <h1 id="home-message"></h1>
+        <div id="predictions-banner"></div>
+        <div id="message-and-image"></div>
     </div>
 </template>
 
@@ -17,24 +18,79 @@
             ])
         },
         methods: {
+            checkFutureRound() {
+                this.$store.dispatch('checkFutureRound')
+                    .then((response) => {
+                        var status = response.data["status"];
+                        var update_text = "Next round opens in ";
+                        if (status === 1) {
+                            var days = response.data["days"];
+                            if (days === 1) {
+                                update_text = update_text + "1 day, ";
+                            } else {
+                                update_text = update_text + days + " days, ";
+                            }
+                            var hours = response.data["hours"];
+                            if (hours === 1) {
+                                update_text = update_text + "1 hour, ";
+                            } else {
+                                update_text = update_text + hours + " hours, ";
+                            }
+                            var minutes = response.data["minutes"];
+                            if (minutes === 1) {
+                                update_text = update_text + "and 1 minute";
+                            } else {
+                                update_text = update_text + "and " + minutes + " minutes";
+                            }
+                            document.getElementById("home-message").innerHTML = update_text;
+                        }
+                        else {
+                            if(this.loggedIn()) {
+                                this.getPredictions()
+                            }
+                            else {
+                                this.setupLoggedOut()
+                            }
+                        }
+                    })
+
+            },
             getPredictions() {
                 this.$store.dispatch('getPredictions')
                     .then((response) => {
-                        if (response.data.message !== "Error. No predictions made") {
+                        if(response.data[0] !== "No Open Round") {
+                            if (response.data.message !== "Error. No predictions made") {
 
-                            document.getElementById('predictions-banner').innerHTML = "Your predictions for round " + response.data[0][4] + ":"
-                            var printed_table = '<table><tr><th>Race No.</th><th>Snail No.</th><th>Snail Name</th><th>Trainer</th> </tr>';
 
-                            for (var y = 0; y < response.data.length; y++) {
-                                printed_table += '<tr><td>' + (y + 1) + '</td><td>' + response.data[y][1] + '</td><td>' + response.data[y][2] + '</td><td>' + response.data[y][3] + '</td></tr>';
+                                document.getElementById('predictions-banner').innerHTML = "Your predictions for round " + response.data[0][4] + ":";
+                                var printed_table = '<table><tr><th>Race No.</th><th>Snail No.</th><th>Snail Name</th><th>Trainer</th> </tr>';
+
+                                for (var y = 0; y < response.data.length; y++) {
+                                    printed_table += '<tr><td>' + (y + 1) + '</td><td>' + response.data[y][1] + '</td><td>' + response.data[y][2] + '</td><td>' + response.data[y][3] + '</td></tr>';
+                                }
+                                printed_table += '</table>';
+                            } else if (response.data.message == "Error. No predictions made") {
+                                printed_table = "<center><h3 style='background-color:white; margin-right:30%;'>You have not made any predictions. To do so <a href='snailx.racing'>Click Here</a></h3></center>"
+                                printed_table+="<img height=70% width=70% src=https://static.euronews.com/articles/stories/03/22/91/52/880x495_cmsv2_1f2eea27-fa79-5a58-90f2-c298315d4e68-3229152.jpg>"
                             }
-                            printed_table += '</table>';
                         } else {
-                            printed_table = "<center><h3 style='background-color:white; padding:5px;'>You have not made any predictions. To do so <a href='snailx.racing'>Click Here</a></h3></center>"
-
+                            printed_table = "<center><h3 style='background-color:white; padding:5px; margin-right:50%'>No rounds currently open!</h3></center>"
                         }
-                        document.getElementById('predictions').innerHTML = printed_table;
+                        document.getElementById('message-and-image').innerHTML = printed_table;
                     })
+            },
+
+            setupLoggedOut() {
+                var round_open = this.getActiveRound()
+                var printed_table = ""
+                if(round_open) {
+                    printed_table += "<center><h3 style='background-color:white; margin-right:30%;'>A round is now open to predict on - <a href='snailx.racing/login'>Log in</a>/<a href='snailx.racing/register'>register</a> to play!</h3></center>"
+                }
+                else {
+                    printed_table += "<center><h3 style='background-color:white; margin-right:30%;'><a href='snailx.racing/login'>Log in</a>/<a href='snailx.racing/register'>register</a> to play!</h3></center>"
+                }
+                printed_table+="<img height=70% width=70% src=https://static.euronews.com/articles/stories/03/22/91/52/880x495_cmsv2_1f2eea27-fa79-5a58-90f2-c298315d4e68-3229152.jpg>"
+                document.getElementById('message-and-image').innerHTML = printed_table;
             },
             getActiveRound() {
                 this.$store.dispatch('getActiveRound')
@@ -44,8 +100,7 @@
             }
         },
         beforeMount() {
-            this.getPredictions();
-            this.getActiveRound()
+            this.checkFutureRound();
         }
     }
 </script>

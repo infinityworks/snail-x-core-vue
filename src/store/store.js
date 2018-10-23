@@ -117,7 +117,7 @@ export const store = new Vuex.Store({
             return new Promise((resolve) => {
                 axios.get('localhost:5000/get-active-round')
                     .then(response => {
-                        resolve(response.data['status'])
+                        resolve(response.data['active_round'])
                     })
             })
         }
