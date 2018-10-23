@@ -93,6 +93,18 @@ export const store = new Vuex.Store({
                 resolve()
             })
         },
+        checkFutureRound() {
+            return new Promise((resolve, reject) => {
+                axios.get('http://127.0.0.1:5000/check-future-rounds')
+                .then(response => {
+                    resolve(response);
+                })
+                    .catch(error => {
+                        console.log(error);
+                        reject(error);
+                    })
+                })
+            },
         //Get user predictions from snail-x-core/core/router.py using email
         getPredictions() {
             return new Promise((resolve, reject) => {

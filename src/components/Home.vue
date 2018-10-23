@@ -1,6 +1,7 @@
 <template>
     <div id="home">
         <h1 v-if="!loggedIn"  style="color: whitesmoke">Welcome, please register or login.</h1>
+        <h1 v-if="loggedIn" id="home-message"></h1>
         <div v-if="loggedIn" id="predictions-banner"></div>
         <div v-if="loggedIn" id="predictions"></div>
     </div>
@@ -10,12 +11,54 @@
     import { mapGetters } from "vuex"
     export default {
         name: 'home',
+        data() {
+            return {
+                messageText: "",
+            }
+        },
         computed: {
             ...mapGetters([
                 'loggedIn'
             ])
         },
+        created() {
+            this.checkFutureRound()
+        },
         methods: {
+            checkFutureRound() {
+                this.$store.dispatch('checkFutureRound')
+                    .then((response) => {
+                        var status = response.data["status"];
+                        var update_text = "Next round opens in ";
+
+                        if (status === 1) {
+                            var days = response.data["days"];
+                            if (days === 1) {
+                                update_text = update_text + "1 day, ";
+                            } else {
+                                update_text = update_text + days + " days, ";
+                            }
+                            var hours = response.data["hours"];
+                            if (hours === 1) {
+                                update_text = update_text + "1 hour, ";
+                            } else {
+                                update_text = update_text + hours + " hours, ";
+                            }
+                            var minutes = response.data["minutes"];
+                            if (minutes === 1) {
+                                update_text = update_text + "and 1 minute";
+                            } else {
+                                update_text = update_text + "and " + minutes + " minutes";
+                            }
+
+                            document.getElementById("home-message").innerHTML = update_text;
+                        }
+                        else {
+                            this.getPredictions()
+                        }
+                    })
+                }
+            },
             getPredictions() {
                 this.$store.dispatch('getPredictions')
                     .then((response) => {
@@ -41,10 +84,6 @@
                         document.getElementById('predictions').innerHTML = printed_table;
                     })
             }
-        },
-        beforeMount() {
-            this.getPredictions()
-        }
     }
 
 
@@ -57,6 +96,16 @@
         position:fixed;
         top: 40%;
         left: 32%;
+    }
+    /*--- future rounds message styling ---*/
+
+    #home-message{
+        background-color: white;
+        /*color: black;*/
+        width: 50%;
+        margin-bottom: 5%;
+        margin-left: 5%;
+        text-align: center;
     }
     /*--- prediction banner styling ---*/
 
