@@ -55,7 +55,7 @@
                                 }
                                 printed_table += '</table>';
                             } else {
-                                var printed_table = "<h3 style="background-color: white">No results avaliable</h3>"
+                                var printed_table = "<h3 style='background-color: white'>No results avaliable</h3>"
                             }
 
                         document.getElementById('currentRoundResults').innerHTML = printed_table;
