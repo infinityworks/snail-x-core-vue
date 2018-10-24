@@ -126,10 +126,28 @@ export const store = new Vuex.Store({
             })
         },
         getActiveRound() {
-            return new Promise((resolve) => {
-                axios.get('localhost:5000/get-active-round')
+            return new Promise((resolve, reject) => {
+                axios.get('http://127.0.0.1:5000/get-active-round')
                     .then(response => {
-                        resolve(response.data['active_round'])
+                        resolve(response)
+                    })
+                    .catch(error => {
+                        alert("errror!")
+                        console.log(error);
+                        reject(error);
+                    })
+            })
+        },
+        getInflightRound() {
+            return new Promise((resolve, reject) => {
+                axios.get('http://127.0.0.1:5000/get-inflight-round')
+                    .then(response => {
+                        resolve(response)
+                    })
+                    .catch(error => {
+                        alert("errror!")
+                        console.log(error);
+                        reject(error);
                     })
             })
         }

@@ -130,8 +130,7 @@
 
     .navigation-bar {
         background-color: whitesmoke;
-        border-top: 1px grey solid;
-        border-bottom: 1px grey solid;
+        border: 1px grey solid;
         position: fixed;
         left: 27.5%;
         top: 26%;
