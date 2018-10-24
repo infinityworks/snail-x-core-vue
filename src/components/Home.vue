@@ -1,6 +1,7 @@
 <template>
     <div id="home">
         <h1 v-if="!loggedIn"  style="color: whitesmoke">Welcome, please register or login.</h1>
+        <h1 v-if="loggedIn" id="home-message"></h1>
         <div v-if="loggedIn" id="predictions-banner"></div>
         <div v-if="loggedIn" id="predictions"></div>
         <div v-if="loggedIn" id="currentRoundResults"></div>
@@ -11,22 +12,59 @@
     import { mapGetters } from "vuex"
     export default {
         name: 'home',
+        data() {
+            return {
+            }
+        },
         computed: {
             ...mapGetters([
                 'loggedIn'
             ])
         },
+        created() {
+            this.checkFutureRound()
+        },
         methods: {
+            checkFutureRound() {
+                this.$store.dispatch('checkFutureRound')
+                    .then((response) => {
+                        const status = response.data["status"];
+                        let update_text = "Next round opens in ";
+
+                        if (status === 1) {
+                            const days = response.data["days"];
+                            if (days === 1) {
+                                update_text = update_text + "1 day, ";
+                            } else {
+                                update_text = update_text + days + " days, ";
+                            }
+                            const hours = response.data["hours"];
+                            if (hours === 1) {
+                                update_text = update_text + "1 hour, ";
+                            } else {
+                                update_text = update_text + hours + " hours, ";
+                            }
+                            const minutes = response.data["minutes"];
+                            if (minutes === 1) {
+                                update_text = update_text + "and 1 minute";
+                            } else {
+                                update_text = update_text + "and " + minutes + " minutes";
+                            }
+
+                            document.getElementById("home-message").innerHTML = update_text;
+                        }
+                        else {
+                            this.getPredictions()
+                        }
+                    })
+            },
             getPredictions() {
                 this.$store.dispatch('getPredictions')
                     .then((response) => {
                         if(response.data[0] !== "No Open Round") {
                             if (response.data.message !== "Error. No predictions made") {
-
-
                                 document.getElementById('predictions-banner').innerHTML = "Your predictions for round " + response.data[0][4] + ":";
                                 var printed_table = '<table><tr><th>Race No.</th><th>Snail No.</th><th>Snail Name</th><th>Trainer</th> </tr>';
-
                                 for (var y = 0; y < response.data.length; y++) {
                                     printed_table += '<tr><td>' + (y + 1) + '</td><td>' + response.data[y][1] + '</td><td>' + response.data[y][2] + '</td><td>' + response.data[y][3] + '</td></tr>';
                                 }
@@ -40,6 +78,10 @@
                         }
                         document.getElementById('predictions').innerHTML = printed_table;
                     })
+                },
+
+
+            }
             },
             getCurrentRoundResults() {
                 this.$store.dispatch('getCurrentRoundResults')
@@ -80,6 +122,16 @@
         position:fixed;
         top: 40%;
         left: 32%;
+    }
+    /*--- future rounds message styling ---*/
+
+    #home-message{
+        background-color: white;
+        /*color: black;*/
+        width: 50%;
+        margin-bottom: 5%;
+        margin-left: 5%;
+        text-align: center;
     }
     /*--- prediction banner styling ---*/
 
