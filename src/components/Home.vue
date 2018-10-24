@@ -3,6 +3,7 @@
         <h1 v-if="!loggedIn"  style="color: whitesmoke">Welcome, please register or login.</h1>
         <div v-if="loggedIn" id="predictions-banner"></div>
         <div v-if="loggedIn" id="predictions"></div>
+        <div v-if="loggedIn" id="currentRoundResults"></div>
     </div>
 </template>
 
@@ -39,10 +40,31 @@
                         }
                         document.getElementById('predictions').innerHTML = printed_table;
                     })
+            },
+            getCurrentRoundResults() {
+                this.$store.dispatch('getCurrentRoundResults')
+                    .then((response) => {
+                        if (response.data.message !== "Error. No current round results") {
+
+
+                                document.getElementById('predictions-banner').innerHTML = "Your predictions for round " + response.data[0][4] + ":";
+                                var printed_table = '<h3 style="background-color: white">Current Race Results</h3><table><tr><th>Race No.</th><th>Snail Name</th><th>Trainer</th> </tr>';
+
+                                for (var y = 0; y < response.data.length; y++) {
+                                    printed_table += '<tr><td>' + (y + 1) + '</td><td>' + response.data[y][2] + '</td><td>' + response.data[y][3] + '</td></tr>';
+                                }
+                                printed_table += '</table>';
+                            }
+
+                        document.getElementById('currentRoundResults').innerHTML = printed_table;
+                    })
+
+
             }
         },
         beforeMount() {
             this.getPredictions()
+            this.getCurrentRoundResults()
         }
     }
 
