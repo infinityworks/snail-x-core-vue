@@ -123,5 +123,19 @@ export const store = new Vuex.Store({
                     })
             })
         },
-    }
-});
+        getCurrentRoundResults() {
+            return new Promise((resolve, reject) => {
+                axios.get('http://127.0.0.1:5000/get-current-round-results')
+                    .then(response => {
+                        resolve(response);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        reject(error);
+                    })
+            })
+        },
+
+
+        }
+    });
