@@ -54,6 +54,8 @@
                                     printed_table += '<tr><td>' + (y + 1) + '</td><td>' + response.data[y][2] + '</td><td>' + response.data[y][3] + '</td></tr>';
                                 }
                                 printed_table += '</table>';
+                            } else {
+                                var printed_table = "<h3 style="background-color: white">No results avaliable</h3>"
                             }
 
                         document.getElementById('currentRoundResults').innerHTML = printed_table;
