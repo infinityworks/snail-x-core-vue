@@ -69,20 +69,19 @@
                                     printed_table += '<tr><td>' + (y + 1) + '</td><td>' + response.data[y][1] + '</td><td>' + response.data[y][2] + '</td><td>' + response.data[y][3] + '</td></tr>';
                                 }
                                 printed_table += '</table>';
-                            } else if (response.data.message == "Error. No predictions made") {
+                            }
+                            else if (response.data.message == "Error. No predictions made") {
                                 printed_table = "<center><h3 style='background-color:white; margin-right:30%;'>You have not made any predictions. To do so <a href='snailx.racing'>Click Here</a></h3></center>"
                                 printed_table+="<img height=70% width=70% src=https://static.euronews.com/articles/stories/03/22/91/52/880x495_cmsv2_1f2eea27-fa79-5a58-90f2-c298315d4e68-3229152.jpg>"
                             }
-                        } else {
+                        }
+                        else {
                             printed_table = "<center><h3 style='background-color:white; padding:5px; margin-right:50%'>No rounds currently open!</h3></center>"
                         }
                         document.getElementById('predictions').innerHTML = printed_table;
                     })
                 },
 
-
-            }
-            },
             getCurrentRoundResults() {
                 this.$store.dispatch('getCurrentRoundResults')
                     .then((response) => {
