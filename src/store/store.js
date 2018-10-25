@@ -134,7 +134,10 @@ export const store = new Vuex.Store({
                     })
                     .catch(error => {
                         alert("errror!")
-
+                        reject(error);
+                    })
+            })
+        },
         getCurrentRoundResults() {
             return new Promise((resolve, reject) => {
                 axios.get('http://127.0.0.1:5000/get-current-round-results')

@@ -5,8 +5,8 @@
         <div id="predictions-banner"></div>
         <div id="message-and-image"></div>
         <div v-if="loggedIn" id="predictions"></div>
-        <div v-if="loggedIn" id="currentRoundResults"></div>
-
+            <div v-if="loggedIn" id="currentRoundResults"></div>
+        </div>
 </template>
 
 <script>
@@ -119,11 +119,10 @@
             },
             getActiveRound() { //  Returns data where ['open'] is True if an open round exists and False if not
                 return this.$store.dispatch('getActiveRound')
-
             },
             getInflightRound() {
                 return this.$store.dispatch('getInflightRound')
-            }
+                    .then((response) => {
                         if(response.data[0] !== "No Open Round") {
                             if (response.data.message !== "Error. No predictions made") {
                                 document.getElementById('predictions-banner').innerHTML = "Your predictions for round " + response.data[0][4] + ":";
