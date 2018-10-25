@@ -30,9 +30,7 @@
         methods: {
             async checkFutureRound() {
                 const {data} = await this.getFutureRound()
-                var status = data['status'];
-                alert("hello!");
-                alert(status);
+                const status = data['status'];
                 if (status === 1) {
                     this.buildFutureRoundMessage(data)
                     this.futureRound = 1;
