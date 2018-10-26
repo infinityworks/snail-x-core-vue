@@ -128,7 +128,7 @@
 
             email_in_db() {
                 return this.$store.dispatch('emailInDB', {
-                    email: this.email,
+                    email: this.email.toLowerCase(),
                 })
                     .then((response) => {
                         var result = Boolean(response);
@@ -144,7 +144,7 @@
                 this.$store.dispatch('registerUser', {
                     firstName: this.firstName,
                     lastName: this.lastName,
-                    email: this.email,
+                    email: this.email.toLowerCase(),
                     password: this.password
                 })
                     .then(() => {
@@ -157,6 +157,10 @@
 
 <style scoped>
     #register {
+        position: fixed;
+        overflow: auto;
+        top: 10%;
+        left: 11%;
         width: 50%;
         border: 1px solid grey;
         background-color: white;

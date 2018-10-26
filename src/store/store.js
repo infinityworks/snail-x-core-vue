@@ -24,7 +24,7 @@ export const store = new Vuex.Store({
         }
     },
     mutations: {
-        loginUser(state, { user_email, user_first_name }) {
+        loginUser(state, {user_email, user_first_name}) {
             state.user = user_email;
             state.user_first_name = user_first_name
         },
@@ -36,7 +36,7 @@ export const store = new Vuex.Store({
     actions: {
         emailInDB: function (context, credentials) {
             return new Promise((resolve, reject) => {
-                axios.post('http://localhost:5000/check-duplicate-email', {
+                axios.post('http://127.0.0.1:5000/check-duplicate-email', {
                     email: credentials.email
                 })
                     .then(response => {
@@ -51,19 +51,20 @@ export const store = new Vuex.Store({
 
         loginUser(context, credentials) {
             return new Promise((resolve, reject) => {
-                axios.post('http://localhost:5000/login-user', {
+                axios.post('http://127.0.0.1:5000/login-user', {
                     email: credentials.email,
                     password: credentials.password,
                 }, {
                     headers: {
                         'Content-type': 'application/json',
-                }})
+                    }
+                })
                     .then(response => {
                         const user_email = response.data['user_email'];
                         const user_first_name = response.data['user_first_name'];
                         localStorage.setItem('user_email', user_email);
                         localStorage.setItem('user_first_name', user_first_name);
-                        context.commit('loginUser', { user_email, user_first_name });
+                        context.commit('loginUser', {user_email, user_first_name});
                         resolve(response);
                     })
                     .catch(error => {
@@ -75,7 +76,7 @@ export const store = new Vuex.Store({
 
         registerUser(context, credentials) {
             return new Promise((resolve, reject) => {
-                axios.post('http://localhost:5000/register-user', {
+                axios.post('http://127.0.0.1:5000/register-user', {
                     firstName: credentials.firstName,
                     lastName: credentials.lastName,
                     email: credentials.email,
@@ -101,11 +102,43 @@ export const store = new Vuex.Store({
 
         getOpenRound() {
             return new Promise((resolve) => {
-                axios.get('http://localhost:5000/get-open-round', {
+                axios.get('http://localhost:5000/get-open-round')
+                    .then(response => {
+                        resolve(response);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        reject(error);
+                    })
+            })
+        },
+
+        checkFutureRound() {
+            return new Promise((resolve, reject) => {
+                axios.get('http://127.0.0.1:5000/check-future-rounds')
+                .then(response => {
+                    resolve(response);
+                })
+                    .catch(error => {
+                        console.log(error);
+                        reject(error);
+                    })
+                })
+            },
+        //Get user predictions from snail-x-core/core/router.py using email
+        getPredictions() {
+            return new Promise((resolve, reject) => {
+                axios.post('http://127.0.0.1:5000/user-predictions', {
+                    email: localStorage.getItem("user_email")
+                }, {
+                    headers: {
+                        'Content-type': 'application/json',
+                    }
                 })
                     .then(response => {
                         resolve(response);
                     })
+
             })
         },
         storePredictions(context, predictions) {
@@ -114,13 +147,50 @@ export const store = new Vuex.Store({
                     userEmail: this.state.user,
                     racePredictions: predictions.racePredictions
                 })
-                    .then(response => {
-                        resolve(response);
-                    })
                     .catch(error => {
+                        console.log(error);
                         reject(error);
                     })
             })
         },
+
+        getActiveRound() {
+            return new Promise((resolve, reject) => {
+                axios.get('http://127.0.0.1:5000/get-active-round')
+                    .then(response => {
+                        resolve(response)
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        reject(error);
+                    })
+            })
+        },
+        getCurrentRoundResults() {
+            return new Promise((resolve, reject) => {
+                axios.get('http://127.0.0.1:5000/get-current-round-results')
+                    .then(response => {
+                        resolve(response);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        reject(error);
+                    })
+            })
+        },
+          
+        getInflightRound() {
+            return new Promise((resolve, reject) => {
+                axios.get('http://127.0.0.1:5000/get-inflight-round')
+                    .then(response => {
+                        resolve(response)
+                    })
+                    .catch(error => {
+                        alert("errror!");
+                        console.log(error);
+                        reject(error);
+                    })
+            })
+        }
     }
 });

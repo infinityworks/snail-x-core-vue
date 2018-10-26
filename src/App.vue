@@ -79,7 +79,11 @@
         color: #2c3e50;
         font-size: 24px;
         height: 100vh;
+<<<<<<< HEAD
         /*overflow: auto;*/
+=======
+        overflow: auto;
+>>>>>>> 745133aa67f92a4cd91d482bb0b15e0a92b938c4
     }
 
     .nav {
@@ -129,9 +133,8 @@
 
     .navigation-bar {
         background-color: whitesmoke;
-        border-top: 1px grey solid;
-        border-bottom: 1px grey solid;
-        /*position: fixed;*/
+        border: 1px grey solid;
+        position: fixed;
         left: 27.5%;
         top: 26%;
         padding-left: 1em;
